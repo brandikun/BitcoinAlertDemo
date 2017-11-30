@@ -26,21 +26,8 @@ public class Main {
     public static void main(String[] args) throws IOException {
         
         JsonObject bpi = 
-                getJSON("https://api.coindesk.com/v1/bpi/currentprice/USD.json");
+                JsonHelper.getJSON("https://api.coindesk.com/v1/bpi/currentprice/USD.json");
         String bpiPrint = bpi.toString();
         System.out.println(bpiPrint);
-    }
-    
-    private static JsonObject getJSON(String sURL) throws IOException {
-        URL url = new URL(sURL);
-        HttpURLConnection request = (HttpURLConnection) url.openConnection();
-        request.connect();
-        
-        JsonParser jp = new JsonParser();
-        //use parser to take in input stream by casting httpconnection to InputStream in ISR
-        JsonElement root = 
-                jp.parse(new InputStreamReader((InputStream) request.getContent()));
-        JsonObject rootobj = root.getAsJsonObject();
-        return rootobj;
     }
 }
