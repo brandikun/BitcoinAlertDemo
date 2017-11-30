@@ -14,6 +14,11 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import com.google.gson.*;
 import java.net.HttpURLConnection;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author himes
@@ -25,12 +30,23 @@ public class Main {
      */
     public static void main(String[] args) throws IOException {
         
-        JsonObject priceIndex = 
-                JsonHelper.getJSON("https://api.coindesk.com/v1/bpi/currentprice/USD.json");
-        JsonElement bpiElement = priceIndex.get("bpi");
-        JsonElement uSDElement = bpiElement.getAsJsonObject().get("USD");
-        JsonObject uSDObj = uSDElement.getAsJsonObject();
-        float rate = uSDObj.get("rate_float").getAsFloat();
-        System.out.println(rate);
+        Runnable getPrice = new Runnable()  {
+            @Override
+            public void run() {    
+                try {
+                    JsonObject priceIndex =
+                        JsonHelper.getJSON("https://api.coindesk.com/v1/bpi/currentprice/USD.json");
+                    JsonElement bpiElement = priceIndex.get("bpi");
+                    JsonElement uSDElement = bpiElement.getAsJsonObject().get("USD");
+                    JsonObject uSDObj = uSDElement.getAsJsonObject();
+                    float rate = uSDObj.get("rate_float").getAsFloat();
+                    System.out.println(rate);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        };
+        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+        executor.scheduleAtFixedRate(getPrice, 0, 1, TimeUnit.MINUTES);
     }
 }
