@@ -27,9 +27,9 @@ public class JsonHelper {
         
         JsonParser jp = new JsonParser();
         //use parser to take in input stream by casting httpconnection to InputStream in ISR
-        JsonElement root = 
+        JsonElement dump = 
                 jp.parse(new InputStreamReader((InputStream) request.getContent()));
-        JsonObject rootobj = root.getAsJsonObject();
-        return rootobj;
+        JsonObject dumpobj = dump.getAsJsonObject();
+        return dumpobj;
     }
 }

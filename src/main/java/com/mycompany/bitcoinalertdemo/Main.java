@@ -25,9 +25,12 @@ public class Main {
      */
     public static void main(String[] args) throws IOException {
         
-        JsonObject bpi = 
+        JsonObject priceIndex = 
                 JsonHelper.getJSON("https://api.coindesk.com/v1/bpi/currentprice/USD.json");
-        String bpiPrint = bpi.toString();
-        System.out.println(bpiPrint);
+        JsonElement bpiElement = priceIndex.get("bpi");
+        JsonElement uSDElement = bpiElement.getAsJsonObject().get("USD");
+        JsonObject uSDObj = uSDElement.getAsJsonObject();
+        float rate = uSDObj.get("rate_float").getAsFloat();
+        System.out.println(rate);
     }
 }
