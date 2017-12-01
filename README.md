@@ -1,5 +1,5 @@
 # BitcoinAlertDemo
-Get bitcoin spot price for Coindesk API using Gson and send email alerts using JavaMail and SMTP
+Get bitcoin spot price from the Coindesk API using Gson library and send email alerts using JavaMail and SMTP.
 
 Simple tool I created to learn Maven, parsing "nested" JSON using Gson, and JavaMail/SMTP authentication.
 
